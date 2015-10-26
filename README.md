@@ -2,5 +2,7 @@
 
 # straussi1
 Todo: 
-- uhrensohne
+- Technologie wählen
+- Webseite analysieren 
+- Starten 
 
