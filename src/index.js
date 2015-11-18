@@ -8,6 +8,9 @@ var app = express();
 app.get('/', function (req, res) {
   res.send('Hello world\n');
 });
+app.post('/', function (req,res) {
+res.send(json(req.body));
+});
 
 app.listen(PORT);
 console.log('Running on http://localhost:' + PORT);
