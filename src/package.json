@@ -1,9 +1,9 @@
 {
-  "name": "docker-centos-hello",
+  "name": "radcup-app",
   "private": true,
   "version": "0.0.1",
-  "description": "Node.js Hello world app on CentOS using docker",
-  "author": "Daniel Gasienica <daniel@gasienica.ch>",
+  "description": "Node.js / ionic App",
+  "author": "Immanuel Haag <ih027@hdm-stuttgart.de>",
   "dependencies": {
     "express": "3.2.4"
   }
