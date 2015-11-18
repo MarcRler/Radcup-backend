@@ -1,8 +1,4 @@
-# straussi1 webapp
+# radcup app
 
-# straussi1
-Todo: 
-- Technologie wählen
-- Webseite analysieren 
-- Starten 
 
+tbdf. 
