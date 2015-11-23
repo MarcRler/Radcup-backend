@@ -1,2 +1,4 @@
 src/node_modules/
 src/npm-debug.log
+src/passport-mongo/node_modules
+src/passport-mongo/npm-debug.log

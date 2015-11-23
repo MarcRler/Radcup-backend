@@ -5,6 +5,6 @@
   "description": "Node.js / ionic App",
   "author": "Immanuel Haag <ih027@hdm-stuttgart.de>",
   "dependencies": {
-    "express": "3.2.4"
+    "express": "^3.2.4"
   }
 }
