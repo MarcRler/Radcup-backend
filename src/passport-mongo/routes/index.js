@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var User = require('../models/user');
 
 var isAuthenticated = function (req, res, next) {
 	// if user is authenticated in the session, call the next() to call the next request handler
@@ -41,6 +42,12 @@ module.exports = function(passport){
 	/* GET Home Page */
 	router.get('/home', isAuthenticated, function(req, res){
 		res.render('home', { user: req.user });
+	});
+
+	router.get('/users', function(req, res){
+		User.find({},function(err, users){
+			res.json(users)
+		});
 	});
 
 	/* Handle Logout */
