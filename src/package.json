@@ -3,7 +3,8 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "./node_modules/.bin/mocha"
   },
   "dependencies": {
     "express": "~4.2.0",
@@ -17,7 +18,12 @@
     "passport": "~0.2.0",
     "passport-local": "~1.0.0",
     "mongoose": "~4.2.0",
-    "bcrypt-nodejs" : "*",
-    "connect-flash" : "*"
+    "bcrypt-nodejs": "*",
+    "connect-flash": "*"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^2.3.4",
+    "superagent": "^1.4.0"
   }
 }

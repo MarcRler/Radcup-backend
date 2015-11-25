@@ -3,6 +3,26 @@ var app = require('../app');
 
 app.set('port', process.env.PORT || 3000);
 
-var server = app.listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + server.address().port);
+var server = app.listen(app.get('port'), function(){
+  console.log('some other stuff ' + app.get('port'));
 });
+
+var boot = function (ready) {
+  server.listen(app.get('port'), function(){
+    console.info('Express server listening on port ' + app.get('port'));
+    ready();
+  });
+}
+var shutdown = function(ready) {
+  server.close();
+  ready();
+}
+if (require.main === module) {
+  boot();
+}
+else {
+  console.info('Running app as a module')
+  exports.boot = boot;
+  exports.shutdown = shutdown;
+  exports.port = app.get('port');
+}
