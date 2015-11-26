@@ -1,10 +1,8 @@
 var Game = require('../models/game');
 
 exports.postGames = function(req, res) {
-  // Create a new instance of the Beer model
   var game = new Game();
 
-  // Set the beer properties that came from the POST data
   game.host = req.body.host;
   game.adress = req.body.adress;
   // game.city = req.body.city;
@@ -68,5 +66,14 @@ exports.putGame = function(req, res) {
 
       res.json(game);
     });
+  });
+};
+
+exports.deleteGame = function(req, res) {
+  Game.findByIdAndRemove(req.params.game_id, function(err) {
+   if (err)
+     res.send(err);
+
+   res.json({ message: 'Game removed' });
   });
 };

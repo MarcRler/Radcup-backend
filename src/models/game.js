@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var GameSchema = new mongoose.Schema({
-  host: String,
+  userId: String,
   adress: String,
   // city: String,
   // postalCode: Number,

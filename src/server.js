@@ -8,6 +8,8 @@ var dbConfig = require('./db');
 var development = mongoose.connect(dbConfig.development);
 
 var gameController = require('./controllers/game');
+var userController = require('./controllers/user');
+var authController = require('./controllers/auth');
 
 var port = process.env.PORT || 3000;
 
@@ -26,8 +28,18 @@ router.route('/games')
   .get(gameController.getGames)
 
 router.route('/games/:game_id')
-  .get(gameController.postGames)
+  .get(gameController.getGame)
   .put(gameController.putGame)
+  .delete(gameController.deleteGame)
+
+router.route('/users')
+  .post(userController.postUsers)
+
+router.route('/users/:email')
+  .get(authController.isAuthenticated, userController.getUser)
+
+router.route('/users/:user_id')
+  .put(authController.isAuthenticated, userController.putUser)
 
 app.use('/api', router);
 
