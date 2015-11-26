@@ -6,15 +6,27 @@ describe('User', function () {
     after(setup.shutdown);
     it('credentials are valid ',function(done){
 
-      var profile  ={ username: 'sweg', password: '123' };
+      var profile  ={
+                      username: 'swegYo4',
+                      password: '1234',
+                      email: 'sweg@yolo.com',
+                      firstName: 'sweg',
+                      lastName: 'yolo'};
 
       setup.superagent
-          .post('http://localhost:'+setup.port+"/login")
+          .post('http://localhost:'+setup.port+"/signup")
           .send(profile)
           .set('Accept', 'application/json')
           .end(function(err, res){
-            setup.expect(res.status).to.equal(200);
-            done();
+            if (err) {
+              throw err;
+            }
+            console.log(res);
+            setup.expect(err).to.eql(null)
+            setup.expect(res.body.length).to.eql(1)
+            setup.expect(res.body[0]._id.length).to.eql(24)
+            id = res.body[0]._id
+            done()
       })
     });
   });
