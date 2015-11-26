@@ -24,13 +24,13 @@ router.get('/', function(req, res) {
 });
 
 router.route('/games')
-  .post(gameController.postGames)
+  .post(authController.isAuthenticated, gameController.postGames)
   .get(gameController.getGames)
 
 router.route('/games/:game_id')
-  .get(gameController.getGame)
-  .put(gameController.putGame)
-  .delete(gameController.deleteGame)
+  .get(authController.isAuthenticated, gameController.getGame)
+  .put(authController.isAuthenticated, gameController.putGame)
+  .delete(authController.isAuthenticated, gameController.deleteGame)
 
 router.route('/users')
   .post(userController.postUsers)

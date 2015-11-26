@@ -3,7 +3,8 @@ var Game = require('../models/game');
 exports.postGames = function(req, res) {
   var game = new Game();
 
-  game.host = req.body.host;
+  game.userId = req.user._id;
+//  game.username = req.body.username;
   game.adress = req.body.adress;
   // game.city = req.body.city;
   // game.postalCode = req.body.postalCode;
@@ -45,7 +46,7 @@ exports.getGames = function(req, res) {
 };
 
 exports.getGame = function(req, res) {
-  Game.findById(req.params.game_id, function(err, game) {
+  Game.find({userId: req.user._id, _id: req.params.game_id }, function(err, game) {
     if (err)
       res.send(err);
 
@@ -54,23 +55,21 @@ exports.getGame = function(req, res) {
 };
 
 exports.putGame = function(req, res) {
-  Game.findById(req.params.game_id, function(err, game) {
+  Game.update({userId: req.user._id, _id: req.params.game_id },
+      {adress: req.body.adress
+      //TODO: all changable game values
+    },
+    function(err, adress, raw) {
     if (err)
       res.send(err);
 
-    game.adress = req.body.adress;
+      res.json({messag:adress+ " updated"});
 
-    game.save(function(err) {
-      if (err)
-        res.send(err);
-
-      res.json(game);
-    });
   });
 };
 
 exports.deleteGame = function(req, res) {
-  Game.findByIdAndRemove(req.params.game_id, function(err) {
+  Game.remove({userId: req.user._id, _id: req.params.game_id }, function(err) {
    if (err)
      res.send(err);
 

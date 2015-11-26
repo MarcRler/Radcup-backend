@@ -1,9 +1,16 @@
 var mongoose = require('mongoose');
 
 var GameSchema = new mongoose.Schema({
-  userId: String,
+  userId: {
+    type: String,
+    //TODO:validate 24chars
+  },
+  username: {
+    type: String,
+  },
   adress: String,
-  // city: String,
+  //TODO: validate and trim
+   //city: String,
   // postalCode: Number,
   // latitude: String,
   // longitude: String,
