@@ -1,25 +1,23 @@
-var setup = require('./setup');
-describe('Server', function () {
+var request = require('supertest');
+require = require('really-need');
 
-
-  describe('boot and shutdown', function(){
-    beforeEach(setup.boot);
-    afterEach(setup.shutdown);
-    it('start and stop first ',function(done){
-      setup.superagent
-        .get('http://localhost:'+setup.port)
-        .end(function(err, res){
-          setup.expect(res.status).to.equal(200);
-          done();
-      })
-    });
-    it('start and stop second ',function(done){
-      setup.superagent
-        .get('http://localhost:'+setup.port)
-        .end(function(err, res){
-          setup.expect(res.status).to.equal(200);
-          done();
-      })
-    });
+describe('loading express', function () {
+  var server;
+  beforeEach(function () {
+    server = require('../server', { bustCache: true });
   });
+  afterEach(function (done) {
+    server.close(done);
+  });
+
+  it('start and stop the first time', function testSlash(done) {
+    request(server)
+      .get('/api/')
+      .expect(200, done);
+  });
+  // it('start and stop the second time', function testSlash(done) {
+  //   request(server)
+  //     .get('/api/')
+  //     .expect(200, done);
+  // });
 });

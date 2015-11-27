@@ -23,6 +23,8 @@ router.get('/', function(req, res) {
   res.json({ message: 'this will be a beerpong app' });
 });
 
+app.use('/api', router);
+
 router.route('/games')
   .post(authController.isAuthenticated, gameController.postGames)
   .get(gameController.getGames)
@@ -41,6 +43,9 @@ router.route('/users/:email')
 router.route('/users/:user_id')
   .put(authController.isAuthenticated, userController.putUser)
 
-app.use('/api', router);
+var server = app.listen(3000, function () {
+  var port = server.address().port;
+  console.log('Listening at port %s', port);
+});
 
-app.listen(3000);
+module.exports = server;
