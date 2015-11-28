@@ -16,7 +16,7 @@
     "morgan": "~1.0.0",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",
-    "really-need": "^1.7.2",
+    "really-need": "^1.7.2"
   },
   "devDependencies": {
     "mocha": "^2.3.4",

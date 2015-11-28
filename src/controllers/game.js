@@ -2,7 +2,7 @@ var Game = require('../models/game');
 
 exports.postGames = function(req, res) {
   var game = new Game();
-
+console.log('schau aufruf an: '+res.body)
   game.userId = req.user._id;
 //  game.username = req.body.username;
   game.adress = req.body.adress;
@@ -28,12 +28,20 @@ exports.postGames = function(req, res) {
   //   game.winner = req.body.winner;
   //   game.loserCupsLeft = req.body.loserCupsLeft;
   // }
-  game.save(function(err) {
-    if (err)
-      res.send(err);
-
-    res.json({ message: 'Game added', data: game });
-  });
+  game.save(function(err,erg) {
+    if (err) {
+    res.format({
+      'application/json': function(){
+        res.send({ error: err });
+        res.send(404,err);
+      }});
+    } else {
+      res.format({
+        'application/json': function(){
+          res.send(200,erg);
+        }});
+      }
+    });
 };
 
 exports.getGames = function(req, res) {

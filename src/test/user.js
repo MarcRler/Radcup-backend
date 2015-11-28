@@ -1,33 +1,112 @@
-var setup = require('./setup');
-describe('User', function () {
+var expect = require('expect.js');
+var superagent= require('superagent');
+require = require('really-need');
+var username='testuser27';
+var email='testuser27@web.de';
+var password='secret';
+var host='http://localhost:3000/api/users'
+describe('User-Testsuite', function () {
+  var server;
+  before(function() {
+    server = require('../server', { bustCache: true });
+  });
+  after(function (done) {
+    server.close(done);
+  });
+  describe('Testing '+username, function(){
+   var userid;
+    it('with POST: ',function(done){
+      superagent.post(host)
+          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
+          .send('username='+username) // x-www-form-urlencoded
+          .send('email='+email) // liegt das am Body parser?
+          .send('password='+password)
+          .end(function(e, res){
+              console.log(res.body);
+              expect(e).to.eql(null)
+              expect(res.status).to.eql(200);
+              expect(res.body.username).to.eql(username);
+              expect(res.body.email).to.eql(email);
+              var id = res.body._id;
+              expect(id.length).to.eql(24)
+              done()
+          })
+    });
+  });
+  describe('Testing '+username, function(){
 
-  describe('Signup', function(){
-    before(setup.boot);
-    after(setup.shutdown);
-    it('credentials are valid ',function(done){
+    it('with GET: ',function(done){
+      superagent.get(host+'/'+email)
+          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
+          .auth(email, password) // x-www-form-urlencoded
+          .end(function(e, res){
+              console.log(res.body);
+              expect(e).to.eql(null)
+              expect(res.status).to.eql(200);
+              expect(res.body.username).to.eql(username);
+              expect(res.body.email).to.eql(email);
+              userid = res.body._id;
+              expect(userid.length).to.eql(24)
+              done()
+          })
+    });
+  });
+  describe('Testing '+username, function(){
 
-      var profile  ={
-                      username: 'swegYo4',
-                      password: '1234',
-                      email: 'sweg@yolo.com',
-                      firstName: 'sweg',
-                      lastName: 'yolo'};
+    it('with PUT: ',function(done){
+      username='neuerUsername'
+      superagent.put(host+'/'+userid)
+          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
+          .auth(email, password) // x-www-form-urlencoded
+          .send('email='+email) // liegt das am Body parser?
+          .send('username='+username)
+          .send('password='+password)
+          .end(function(e, res){
+              console.log(res.body);
+              expect(e).to.eql(null)
+              expect(res.status).to.eql(200);
+              expect(res.body.username).to.eql(username);
+              expect(res.body.email).to.eql(email);
+              userid = res.body._id;
+              expect(userid.length).to.eql(24)
+              done()
+          })
+    });
+  });
+  describe('Testing '+username, function(){
 
-      setup.superagent
-          .post('http://localhost:'+setup.port+"/signup")
-          .send(profile)
-          .set('Accept', 'application/json')
-          .end(function(err, res){
-            if (err) {
-              throw err;
-            }
-            console.log(res);
-            setup.expect(err).to.eql(null)
-            setup.expect(res.body.length).to.eql(1)
-            setup.expect(res.body[0]._id.length).to.eql(24)
-            id = res.body[0]._id
-            done()
-      })
+    it('with DELETE: ',function(done){
+      username='neuerUsername'
+      superagent.del(host+'/'+userid)
+          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
+          .auth(email, password) // x-www-form-urlencoded
+          .send('email='+email) // liegt das am Body parser?
+          .send('username='+username)
+          .send('password='+password)
+          .end(function(e, res){
+              console.log(res.body);
+              expect(e).to.eql(null)
+              expect(res.status).to.eql(200);
+              expect(res.body.username).to.eql(username);
+              expect(res.body.email).to.eql(email);
+              var id = res.body._id;
+              expect(id.length).to.eql(24)
+              done()
+          })
+    });
+  });
+  describe('Testing '+username, function(){
+
+    it('with GET after DELTE should fail! ',function(done){
+      superagent.get(host+'/'+email)
+          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
+          .auth(email, password) // x-www-form-urlencoded
+          .end(function(e, res){
+
+
+              expect(res.status).to.eql(401)
+              done()
+          })
     });
   });
 });

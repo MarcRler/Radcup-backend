@@ -7,11 +7,22 @@ exports.postUsers = function(req, res) {
     password: req.body.password
   });
 
-  user.save(function(err) {
-    if (err)
-      res.send(err);
+  user.save(function(err, erg) {
+    if (err) {
+    res.format({
+      'application/json': function(){
+        res.send({ error: err });
+        res.send(404,err);
+      }});
+    } else {
 
-    res.json({ message: 'New user added' });
+      res.format({
+        'application/json': function(){
+          res.send(200,erg);
+        }});
+    }
+
+
   });
 };
 
@@ -21,6 +32,24 @@ exports.getUser = function(req, res) {
       res.send(err);
 
     res.json(user);
+  });
+};
+
+exports.deleteUser = function(req, res) {
+  User.findByIdAndRemove(req.params.user_id, function(err, user) {
+    if (err) {
+    res.format({
+      'application/json': function(){
+        res.send({ error: err });
+        res.send(404,err);
+      }});
+    } else {
+
+      res.format({
+        'application/json': function(){
+          res.send(200,user);
+        }});
+    }
   });
 };
 
