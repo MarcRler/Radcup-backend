@@ -1,14 +1,19 @@
+//TODO: überall auf JSON prüfen und noch weitere Logik Prüfungen einbauen
+
+
 var expect = require('expect.js');
 var superagent= require('superagent');
 require = require('really-need');
-var username='Tester12';
-var email='tester12@test.de';
+var username='Tester33';
+var email='tester33@test.de';
 var password='secret';
 var host='http://localhost:3000/api/'
 var adress='Im Tesfall 23'
 describe('Game-Testsuite', function () {
   var server;
   var userid;
+  var gameid;
+  var gameidnew;
   before(function() {
     server = require('../server', { bustCache: true });
   });
@@ -23,7 +28,6 @@ describe('Game-Testsuite', function () {
           .send('email='+email) // liegt das am Body parser?
           .send('password='+password)
           .end(function(e, res){
-              console.log(res.body);
               expect(e).to.eql(null)
               expect(res.status).to.eql(200);
               expect(res.body.username).to.eql(username);
@@ -42,8 +46,6 @@ describe('Game-Testsuite', function () {
           .auth(email, password) // x-www-form-urlencoded
           .send('adress='+adress)
           .end(function(e, res){
-              console.log(res.body);
-              console.log(userid);
               expect(e).to.eql(null)
               expect(res.status).to.eql(200);
               gameid = res.body._id;
@@ -61,16 +63,40 @@ describe('Game-Testsuite', function () {
           .auth(email, password) // x-www-form-urlencoded
           .send('adress='+adress)
           .end(function(e, res){
-              console.log(res.body);
-              console.log(userid);
               expect(e).to.eql(null)
               expect(res.status).to.eql(200);
-              gameid = res.body._id;
-              expect(gameid.length).to.eql(24)
-              expect(res.body.userId).to.eql(userid); //TODO
+              gameidnew = res.body._id;
+              expect(gameidnew.length).to.eql(24)
+              expect(res.body._id).to.not.eql(gameid);
+              expect(res.body.userId).to.eql(userid);
               done()
           })
     });
   });
+  describe('get all games' , function(){
 
+    it('with GET: ',function(done){
+      superagent.get(host+'games')
+          .end(function(e, res){
+              expect(e).to.eql(null)
+              expect(res.status).to.eql(200);
+              expect(res.body.length).to.eql(71);
+              expect(res.body[69].userId).to.eql(userid);
+              done()
+          })
+    });
+  });
+  describe('get -second- game' , function(){
+
+    it('with GET by gameId: ',function(done){
+      superagent.get(host+'games/'+gameidnew)
+          .end(function(e, res){
+              expect(e).to.eql(null)
+              expect(res.body._id).to.eql(gameidnew);
+              expect(res.status).to.eql(200);
+
+              done()
+          })
+    });
+  });
 });

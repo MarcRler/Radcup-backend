@@ -30,7 +30,7 @@ router.route('/games')
   .get(gameController.getGames)
 
 router.route('/games/:game_id')
-  .get(authController.isAuthenticated, gameController.getGame)
+  .get(gameController.getGame)//Macht kein sinn spiele byID nur als Auth User raus zu geben!
   .put(authController.isAuthenticated, gameController.putGame)
   .delete(authController.isAuthenticated, gameController.deleteGame)
 
@@ -43,7 +43,7 @@ router.route('/users/:email')
 router.route('/users/:user_id')
   .put(authController.isAuthenticated, userController.putUser)
   .delete(authController.isAuthenticated, userController.deleteUser)
-  
+
 var server = app.listen(3000, function () {
   var port = server.address().port;
   console.log('Listening at port %s', port);

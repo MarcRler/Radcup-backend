@@ -2,7 +2,6 @@ var Game = require('../models/game');
 
 exports.postGames = function(req, res) {
   var game = new Game();
-console.log('schau aufruf an: '+res.body)
   game.userId = req.user._id;
 //  game.username = req.body.username;
   game.adress = req.body.adress;
@@ -54,7 +53,7 @@ exports.getGames = function(req, res) {
 };
 
 exports.getGame = function(req, res) {
-  Game.find({userId: req.user._id, _id: req.params.game_id }, function(err, game) {
+  Game.findById(req.params.game_id, function(err, game) {
     if (err)
       res.send(err);
 

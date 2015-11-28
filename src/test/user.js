@@ -1,3 +1,5 @@
+//TODO: überall auf JSON prüfen und noch weitere Logik Prüfungen einbauen
+
 var expect = require('expect.js');
 var superagent= require('superagent');
 require = require('really-need');
@@ -22,7 +24,6 @@ describe('User-Testsuite', function () {
           .send('email='+email) // liegt das am Body parser?
           .send('password='+password)
           .end(function(e, res){
-              console.log(res.body);
               expect(e).to.eql(null)
               expect(res.status).to.eql(200);
               expect(res.body.username).to.eql(username);
@@ -40,7 +41,6 @@ describe('User-Testsuite', function () {
           .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
           .auth(email, password) // x-www-form-urlencoded
           .end(function(e, res){
-              console.log(res.body);
               expect(e).to.eql(null)
               expect(res.status).to.eql(200);
               expect(res.body.username).to.eql(username);
@@ -62,7 +62,6 @@ describe('User-Testsuite', function () {
           .send('username='+username)
           .send('password='+password)
           .end(function(e, res){
-              console.log(res.body);
               expect(e).to.eql(null)
               expect(res.status).to.eql(200);
               expect(res.body.username).to.eql(username);
@@ -84,7 +83,6 @@ describe('User-Testsuite', function () {
           .send('username='+username)
           .send('password='+password)
           .end(function(e, res){
-              console.log(res.body);
               expect(e).to.eql(null)
               expect(res.status).to.eql(200);
               expect(res.body.username).to.eql(username);
