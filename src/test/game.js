@@ -99,4 +99,6 @@ describe('Game-Testsuite', function () {
           })
     });
   });
+  //TODO: Alle Einräge aus meiner DB löschen, --> zähler anpassen dann delete route, put route dann wieder delete
+
 });

@@ -95,7 +95,7 @@ describe('User-Testsuite', function () {
   });
   describe('Testing '+username, function(){
 
-    it('with GET after DELTE should fail! ',function(done){
+    it('with GET after DELETE should fail! ',function(done){
       superagent.get(host+'/'+email)
           .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
           .auth(email, password) // x-www-form-urlencoded
