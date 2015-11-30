@@ -66,11 +66,11 @@ exports.putGame = function(req, res) {
       {adress: req.body.adress
       //TODO: all changable game values
     },
-    function(err, adress, raw) {
+    function(err, result, raw) {
     if (err)
       res.send(err);
 
-      res.json({messag:adress+ " updated"});
+      res.json(result);
 
   });
 };
@@ -80,6 +80,6 @@ exports.deleteGame = function(req, res) {
    if (err)
      res.send(err);
 
-   res.json({ message: 'Game removed' });
+   res.json(Game);
   });
 };

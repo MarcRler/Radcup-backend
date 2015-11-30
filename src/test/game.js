@@ -23,9 +23,9 @@ describe('Game-Testsuite', function () {
   describe('Create a user: '+username, function(){
     it('with POST: ',function(done){
       superagent.post(host+'users')
-          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
-          .send('username='+username) // x-www-form-urlencoded
-          .send('email='+email) // liegt das am Body parser?
+          .type('form')
+          .send('username='+username)
+          .send('email='+email)
           .send('password='+password)
           .end(function(e, res){
               expect(e).to.eql(null)
@@ -42,15 +42,15 @@ describe('Game-Testsuite', function () {
 
     it('with POST: ',function(done){
       superagent.post(host+'games')
-          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
-          .auth(email, password) // x-www-form-urlencoded
+          .type('form')
+          .auth(email, password)
           .send('adress='+adress)
           .end(function(e, res){
               expect(e).to.eql(null)
               expect(res.status).to.eql(200);
               gameid = res.body._id;
               expect(gameid.length).to.eql(24)
-              expect(res.body.userId).to.eql(userid); //TODO
+              expect(res.body.userId).to.eql(userid);
               done()
           })
     });
@@ -59,8 +59,8 @@ describe('Game-Testsuite', function () {
 
     it('with POST: ',function(done){
       superagent.post(host+'games')
-          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
-          .auth(email, password) // x-www-form-urlencoded
+          .type('form')
+          .auth(email, password)
           .send('adress='+adress)
           .end(function(e, res){
               expect(e).to.eql(null)
@@ -100,14 +100,24 @@ describe('Game-Testsuite', function () {
     });
   });
   describe('update -second- game' , function(){
- //TODO: Controller muss noch angepasst werden! 
+ //TODO: Controller muss noch angepasst werden!
     it('with PUT by gameId: ',function(done){
       superagent.put(host+'games/'+gameidnew)
+          .auth(email, password)
           .send('adress=NeueAdresse')
           .end(function(e, res){
-            console.log(res.body);
               expect(res.status).to.eql(200);
+              expect(res.text).to.eql('{"ok":1,"nModified":1,"n":1}');
+              //expect(res.body.adress).to.eql('NeueAdresse')
+              done()
+          })
+    });
+    it('get the updated game by gameId and check values: ',function(done){
+      superagent.get(host+'games/'+gameidnew)
+          .end(function(e, res){
+              expect(e).to.eql(null)
               expect(res.body._id).to.eql(gameidnew);
+              expect(res.status).to.eql(200);
               expect(res.body.adress).to.eql('NeueAdresse')
               done()
           })
@@ -119,8 +129,8 @@ describe('Game-Testsuite', function () {
 
     it('with DELETE -first- game: ',function(done){
       superagent.del(host+'games/'+gameidnew)
-          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
-          .auth(email, password) // x-www-form-urlencoded
+          .type('form')
+          .auth(email, password)
           .end(function(e, res){
               expect(e).to.eql(null)
               expect(res.status).to.eql(200);
@@ -139,8 +149,8 @@ describe('Game-Testsuite', function () {
     });
     it('with DELETE -second- game: ',function(done){
       superagent.del(host+'games/'+gameid)
-          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
-          .auth(email, password) // x-www-form-urlencoded
+          .type('form')
+          .auth(email, password)
           .end(function(e, res){
 
               expect(e).to.eql(null)
@@ -151,9 +161,9 @@ describe('Game-Testsuite', function () {
     });
     it('DELETE user for second testrun : ',function(done){
       superagent.del(host+'users/'+userid)
-          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
-          .auth(email, password) // x-www-form-urlencoded
-          .send('email='+email) // liegt das am Body parser?
+          .type('form')
+          .auth(email, password)
+          .send('email='+email) 
           .send('username='+username)
           .send('password='+password)
           .end(function(e, res){

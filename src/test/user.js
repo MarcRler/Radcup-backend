@@ -38,8 +38,8 @@ describe('User-Testsuite', function () {
 
     it('with GET: ',function(done){
       superagent.get(host+'/'+email)
-          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
-          .auth(email, password) // x-www-form-urlencoded
+          .type('form')
+          .auth(email, password)
           .end(function(e, res){
               expect(e).to.eql(null)
               expect(res.status).to.eql(200);
@@ -56,9 +56,9 @@ describe('User-Testsuite', function () {
     it('with PUT: ',function(done){
       username='neuerUsername'
       superagent.put(host+'/'+userid)
-          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
-          .auth(email, password) // x-www-form-urlencoded
-          .send('email='+email) // liegt das am Body parser?
+          .type('form')
+          .auth(email, password)
+          .send('email='+email)
           .send('username='+username)
           .send('password='+password)
           .end(function(e, res){
@@ -77,9 +77,9 @@ describe('User-Testsuite', function () {
     it('with DELETE: ',function(done){
       username='neuerUsername'
       superagent.del(host+'/'+userid)
-          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
-          .auth(email, password) // x-www-form-urlencoded
-          .send('email='+email) // liegt das am Body parser?
+          .type('form')
+          .auth(email, password)
+          .send('email='+email)
           .send('username='+username)
           .send('password='+password)
           .end(function(e, res){
@@ -97,8 +97,8 @@ describe('User-Testsuite', function () {
 
     it('with GET after DELETE should fail! ',function(done){
       superagent.get(host+'/'+email)
-          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
-          .auth(email, password) // x-www-form-urlencoded
+          .type('form')
+          .auth(email, password) 
           .end(function(e, res){
 
 
