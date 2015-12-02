@@ -3,23 +3,18 @@
 
 var expect = require('expect.js');
 var superagent= require('superagent');
-require = require('really-need');
+var server = require('../server');
 var username='Tester4';
 var email='tester4@test.de';
 var password='secret';
 var host='http://localhost:3000/api/'
 var adress='Im Tesfall 23'
 describe('Game-Testsuite', function () {
-  var server;
   var userid;
   var gameid;
   var gameidnew;
-  before(function() {
-    server = require('../server', { bustCache: true });
-  });
-  after(function (done) {
-    server.close(done);
-  });
+  beforeEach(server.start);
+  afterEach(server.stop);
   describe('Create a user: '+username, function(){
     it('with POST: ',function(done){
       superagent.post(host+'users')
@@ -163,7 +158,7 @@ describe('Game-Testsuite', function () {
       superagent.del(host+'users/'+userid)
           .type('form')
           .auth(email, password)
-          .send('email='+email) 
+          .send('email='+email)
           .send('username='+username)
           .send('password='+password)
           .end(function(e, res){

@@ -6,6 +6,7 @@ var passport = require('passport');
 var expressSession = require('express-session');
 var dbConfig = require('./db');
 var development = mongoose.connect(dbConfig.development);
+var enableDestroy = require('server-destroy');
 
 var gameController = require('./controllers/game');
 var userController = require('./controllers/user');
@@ -41,18 +42,23 @@ router.route('/games/:game_id')
   .delete(authController.isAuthenticated, gameController.deleteGame)
 
 router.route('/users')
-  .post(userController.postUsers)
+  .post(userController.postUsers);
 
 router.route('/users/:email')
-  .get(authController.isAuthenticated, userController.getUser)
+  .get(authController.isAuthenticated, userController.getUser);
 
 router.route('/users/:user_id')
   .put(authController.isAuthenticated, userController.putUser)
-  .delete(authController.isAuthenticated, userController.deleteUser)
+  .delete(authController.isAuthenticated, userController.deleteUser);
 
-var server = app.listen(3000, function () {
-  var port = server.address().port;
-  console.log('Listening at port %s', port);
-});
+module.exports.start = function(started) {
+  module.exports.app = app.listen(port, function () {
+    console.log('Listening at port %s', port);
+    enableDestroy(module.exports.app);
+    if (started) started();
+  });
+};
 
-module.exports = server;
+module.exports.stop = function(stopped) {
+  module.exports.app.destroy(stopped);
+};

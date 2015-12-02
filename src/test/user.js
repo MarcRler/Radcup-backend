@@ -2,26 +2,21 @@
 
 var expect = require('expect.js');
 var superagent= require('superagent');
-require = require('really-need');
+var server = require('../server');
 var username='testuser27';
 var email='testuser27@web.de';
 var password='secret';
 var host='http://localhost:3000/api/users'
 describe('User-Testsuite', function () {
-  var server;
-  before(function() {
-    server = require('../server', { bustCache: true });
-  });
-  after(function (done) {
-    server.close(done);
-  });
+  beforeEach(server.start);
+  afterEach(server.stop);
   describe('Testing '+username, function(){
    var userid;
     it('with POST: ',function(done){
       superagent.post(host)
-          .type('form')  //Warum auch immer man form bei unserer api nehmen muss?
-          .send('username='+username) // x-www-form-urlencoded
-          .send('email='+email) // liegt das am Body parser?
+          .type('form')
+          .send('username='+username)
+          .send('email='+email)
           .send('password='+password)
           .end(function(e, res){
               expect(e).to.eql(null)
@@ -38,7 +33,6 @@ describe('User-Testsuite', function () {
 
     it('with GET: ',function(done){
       superagent.get(host+'/'+email)
-          .type('form')
           .auth(email, password)
           .end(function(e, res){
               expect(e).to.eql(null)
@@ -97,8 +91,7 @@ describe('User-Testsuite', function () {
 
     it('with GET after DELETE should fail! ',function(done){
       superagent.get(host+'/'+email)
-          .type('form')
-          .auth(email, password) 
+          .auth(email, password)
           .end(function(e, res){
 
 
