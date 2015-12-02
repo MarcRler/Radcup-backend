@@ -12,6 +12,12 @@ var userController = require('./controllers/user');
 var authController = require('./controllers/auth');
 
 var port = process.env.PORT || 3000;
+//CORS -> for Ionic development
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -19,7 +25,7 @@ app.use(bodyParser.urlencoded({
 
 var router = express.Router();
 
-router.get('/', function(req, res) {
+router.get('/', function(req, res,next) {
   res.json({ message: 'this will be a beerpong app' });
 });
 
