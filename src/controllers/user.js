@@ -15,14 +15,11 @@ exports.postUsers = function(req, res) {
         res.send(404,err);
       }});
     } else {
-
       res.format({
         'application/json': function(){
-          res.send(200,erg);
+          res.json({ message: 'Created user ' + req.body.username });
         }});
-    }
-
-
+    };
   });
 };
 
@@ -44,10 +41,9 @@ exports.deleteUser = function(req, res) {
         res.send(404,err);
       }});
     } else {
-
       res.format({
         'application/json': function(){
-          res.send(200,user);
+          res.json( { message: 'Deleted user ' + user.username } );
         }});
     }
   });

@@ -4,8 +4,8 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var expressSession = require('express-session');
-var dbConfig = require('./db');
-var development = mongoose.connect(dbConfig.development);
+var config = require('./config');
+mongoose.connect(config);
 var enableDestroy = require('server-destroy');
 
 var gameController = require('./controllers/game');
@@ -13,6 +13,7 @@ var userController = require('./controllers/user');
 var authController = require('./controllers/auth');
 
 var port = process.env.PORT || 3000;
+
 //CORS -> for Ionic development
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -20,9 +21,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.json());
 
 var router = express.Router();
 

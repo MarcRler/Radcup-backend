@@ -1,103 +1,88 @@
-//TODO: überall auf JSON prüfen und noch weitere Logik Prüfungen einbauen
-
 var expect = require('expect.js');
-var superagent= require('superagent');
+var request = require('supertest');
 var server = require('../server');
-var username='testuser27';
-var email='testuser27@web.de';
-var password='secret';
-var host='http://localhost:3000/api/users'
-describe('User-Testsuite', function () {
-  beforeEach(server.start);
-  afterEach(server.stop);
-  describe('Testing '+username, function(){
-   var userid;
-    it('with POST: ',function(done){
-      superagent.post(host)
-          .type('form')
-          .send('username='+username)
-          .send('email='+email)
-          .send('password='+password)
-          .end(function(e, res){
-              expect(e).to.eql(null)
-              expect(res.status).to.eql(200);
-              expect(res.body.username).to.eql(username);
-              expect(res.body.email).to.eql(email);
-              var id = res.body._id;
-              expect(id.length).to.eql(24)
-              done()
-          })
-    });
+var should = require('should');
+var setup = require('./setup');
+var userHelper = require('./helpers/userHelper');
+
+describe('Users', function() {
+  var user = {
+    username: 'MaxMustermann',
+    email: 'max@mustermann.de',
+    pwd: 'pwd123'
+  };
+  before(function(){
+    setup.setupDatabase();
+    server.start();
+    userHelper.createUser(user.username, user.email, user.pwd);
   });
-  describe('Testing '+username, function(){
 
-    it('with GET: ',function(done){
-      superagent.get(host+'/'+email)
-          .auth(email, password)
-          .end(function(e, res){
-              expect(e).to.eql(null)
-              expect(res.status).to.eql(200);
-              expect(res.body.username).to.eql(username);
-              expect(res.body.email).to.eql(email);
-              userid = res.body._id;
-              expect(userid.length).to.eql(24)
-              done()
-          })
-    });
+  after(function(){
+    setup.teardownDatabase();
+    server.stop();
   });
-  describe('Testing '+username, function(){
 
-    it('with PUT: ',function(done){
-      username='neuerUsername'
-      superagent.put(host+'/'+userid)
-          .type('form')
-          .auth(email, password)
-          .send('email='+email)
-          .send('username='+username)
-          .send('password='+password)
-          .end(function(e, res){
-              expect(e).to.eql(null)
-              expect(res.status).to.eql(200);
-              expect(res.body.username).to.eql(username);
-              expect(res.body.email).to.eql(email);
-              userid = res.body._id;
-              expect(userid.length).to.eql(24)
-              done()
-          })
-    });
+  it('should create a user', function() {
+    var user = {
+      username: 'HansHansensen',
+      email: 'hans@hansensen.de',
+      pwd: 'pwd123'
+    };
+    request(server.app)
+      .post('api/users')
+      .send(user)
+      .end(function(err, res){
+        expect(err).to.eql(null);
+        expect(res.status).to.eql(200);
+        expect(res.body.message).to.eql('Created user ' + user.username);
+        done();
+      });
   });
-  describe('Testing '+username, function(){
 
-    it('with DELETE: ',function(done){
-      username='neuerUsername'
-      superagent.del(host+'/'+userid)
-          .type('form')
-          .auth(email, password)
-          .send('email='+email)
-          .send('username='+username)
-          .send('password='+password)
-          .end(function(e, res){
-              expect(e).to.eql(null)
-              expect(res.status).to.eql(200);
-              expect(res.body.username).to.eql(username);
-              expect(res.body.email).to.eql(email);
-              var id = res.body._id;
-              expect(id.length).to.eql(24)
-              done()
-          })
-    });
+  it('should get a user', function(done) {
+    request(server.app)
+      .get('/api/users/' + user.email)
+      .auth(user.email, user.pwd)
+      .end(function(err, res){
+        expect(err).to.eql(null);
+        expect(res.status).to.eql(200);
+        expect(res.body.username).to.eql(user.username);
+        done();
+      });
   });
-  describe('Testing '+username, function(){
 
-    it('with GET after DELETE should fail! ',function(done){
-      superagent.get(host+'/'+email)
-          .auth(email, password)
-          .end(function(e, res){
+  // it('should change credentials of a user', function(done) {
+  //   var newUsername = 'MarkusMustermann';
+  //   request(server.app)
+  //     .get('/api/users/' + user.email)
+  //     .auth(user.email, user.pwd)
+  //     .end(function(err, res){
+  //       request(server.app)
+  //         .put('api/users/' + res.body._id)
+  //         .auth(user.email, user.pwd)
+  //         .send( { username: newUsername } )
+  //         .end(function(error, response){
+  //           expect(error).to.eql(null);
+  //           expect(response.status).to.eql(200);
+  //           expect(response.body.username).to.eql(newUsername);
+  //           done();
+  //         });
+  //     });
+  // });
 
-
-              expect(res.status).to.eql(401)
-              done()
-          })
-    });
-  });
+  // it('should delete a user', function(done) {
+  //   request(server.app)
+  //     .get('/api/users/' + user.email)
+  //     .auth(user.email, user.pwd)
+  //     .end(function(err, res){
+  //       reqeust(server.app)
+  //         .delete('api/users/' + res.body._id)
+  //         .end(function(error, response){
+  //           expect(err).to.eql(null);
+  //           expect(res.status).to.eql(200);
+  //           expect(res.body.message).to.eql('Deleted user' + user.username);
+  //           done();
+  //         });
+  //     });
+  // });
 });

@@ -63,7 +63,8 @@ exports.getGame = function(req, res) {
 
 exports.putGame = function(req, res) {
   Game.update({userId: req.user._id, _id: req.params.game_id },
-      {adress: req.body.adress
+    {
+      adress: req.body.adress
       //TODO: all changable game values
     },
     function(err, result, raw) {
@@ -71,7 +72,6 @@ exports.putGame = function(req, res) {
       res.send(err);
 
       res.json(result);
-
   });
 };
 

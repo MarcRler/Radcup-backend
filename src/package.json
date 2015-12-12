@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node radcup",
-    "test": "./node_modules/.bin/mocha"
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha"
   },
   "dependencies": {
     "bcrypt-nodejs": "*",
@@ -19,8 +19,11 @@
     "really-need": "^1.7.2"
   },
   "devDependencies": {
+    "expect.js": "^0.3.1",
     "mocha": "^2.3.4",
     "nodemon": "^1.8.1",
+    "server-destroy": "^1.0.1",
+    "should": "^7.1.1",
     "supertest": "^1.1.0"
   }
 }
