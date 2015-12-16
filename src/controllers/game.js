@@ -2,9 +2,12 @@ var Game = require('../models/game');
 
 exports.postGames = function(req, res) {
   var game = new Game();
-  game.userId = req.user._id;
-//  game.username = req.body.username;
-  game.adress = req.body.adress;
+  console.log(req.body);
+  // game.userId = req.user._id;
+  //game.username = req.body.username;
+  game.address = req.body.address;
+  game.lat = req.body.lat;
+  game.lng = req.body.lng;
   // game.city = req.body.city;
   // game.postalCode = req.body.postalCode;
   // game.latitude = req.body.latitude
