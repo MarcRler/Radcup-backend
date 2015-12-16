@@ -9,12 +9,12 @@ describe('Users', function() {
   var user = {
     username: 'MaxMustermann',
     email: 'max@mustermann.de',
-    password: 'pwd123'
+    password: 'password123'
   };
   before(function(ready){
     setup.setupDatabase(function(){
       server.start(function(){
-        userHelper.createUser(user.username, user.email, user.pwd, function(){
+        userHelper.createUser(user.username, user.email, user.password, function(){
           ready();
         });
       });
@@ -31,13 +31,12 @@ describe('Users', function() {
     var user = {
       username: 'HansHansensen',
       email: 'hans@hansensen.de',
-      password: 'pwd123'
+      password: 'password123'
     };
     request(server.app)
       .post('/api/users')
       .send(user)
       .end(function(err, res){
-        console.log(err, res);
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
         expect(res.body.message).to.eql('Created user ' + user.username);
@@ -48,7 +47,7 @@ describe('Users', function() {
   it('should get a user', function(done) {
     request(server.app)
       .get('/api/users/' + user.email)
-      .auth(user.email, user.pwd)
+      .auth(user.email, user.password)
       .end(function(err, res){
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
@@ -61,11 +60,11 @@ describe('Users', function() {
   //   var newUsername = 'MarkusMustermann';
   //   request(server.app)
   //     .get('/api/users/' + user.email)
-  //     .auth(user.email, user.pwd)
+  //     .auth(user.email, user.password)
   //     .end(function(err, res){
   //       request(server.app)
   //         .put('api/users/' + res.body._id)
-  //         .auth(user.email, user.pwd)
+  //         .auth(user.email, user.password)
   //         .send( { username: newUsername } )
   //         .end(function(error, response){
   //           expect(error).to.eql(null);
@@ -79,7 +78,7 @@ describe('Users', function() {
   // it('should delete a user', function(done) {
   //   request(server.app)
   //     .get('/api/users/' + user.email)
-  //     .auth(user.email, user.pwd)
+  //     .auth(user.email, user.password)
   //     .end(function(err, res){
   //       reqeust(server.app)
   //         .delete('api/users/' + res.body._id)
