@@ -9,29 +9,35 @@ describe('Users', function() {
   var user = {
     username: 'MaxMustermann',
     email: 'max@mustermann.de',
-    pwd: 'pwd123'
+    password: 'pwd123'
   };
-  before(function(){
-    setup.setupDatabase();
-    server.start();
-    userHelper.createUser(user.username, user.email, user.pwd);
+  before(function(ready){
+    setup.setupDatabase(function(){
+      server.start(function(){
+        userHelper.createUser(user.username, user.email, user.pwd, function(){
+          ready();
+        });
+      });
+    });
   });
 
-  after(function(){
-    setup.teardownDatabase();
-    server.stop();
+  after(function(done){
+    setup.teardownDatabase(function(){
+      server.stop(done);
+    });
   });
 
-  it('should create a user', function() {
+  it.only('should create a user', function(done) {
     var user = {
       username: 'HansHansensen',
       email: 'hans@hansensen.de',
-      pwd: 'pwd123'
+      password: 'pwd123'
     };
     request(server.app)
-      .post('api/users')
+      .post('/api/users')
       .send(user)
       .end(function(err, res){
+        console.log(err, res);
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
         expect(res.body.message).to.eql('Created user ' + user.username);

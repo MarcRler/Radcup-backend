@@ -2,7 +2,7 @@
 
 var User = require('../../models/user');
 
-exports.createUser = function(username, email, password) {
+exports.createUser = function(username, email, password, saved) {
   var user = new User({
     username: username,
     email: email,
@@ -10,6 +10,6 @@ exports.createUser = function(username, email, password) {
   });
   user.save(function(err) {
     if (err) throw err;
-    // done();
+    saved();
   });
 };
