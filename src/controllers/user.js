@@ -61,19 +61,37 @@ exports.deleteUser = function(req, res) {
 
 //This export handle HTTP PUT and update a USER trough the given params in the Mongo DB
 exports.putUser = function(req, res) {
+  console.log(req);
   User.findById(req.params.user_id, function(err, user) {
-    if (err)
-      res.send(err);
-
-    user.username = req.body.username;
-    user.email = req.body.email;
-    user.password = req.body.password;
-
-    user.save(function(err) {
-      if (err)
-        res.send(err);
-
-      res.json(user);
-    });
+    if(!err) {
+      console.log('User: '+user._id+' found! Setting update params...');
+      user.username = req.body.username;
+      user.email = req.body.email;
+      user.password = req.body.password;
+      console.log('updated user: '+user);
+      //calling save function to update the specific user!
+      user.save(function(err) {
+        if (!err) {
+          res.json(user);
+        } else {
+            console.log(err);
+            if(err.name == 'ValidationError') {
+                res.statusCode = 400;
+                res.send({ error: 'Validation error' });
+            } else if (err.name == 'MongoError' && err.code == 11000) {
+                res.statusCode = 400;
+                res.send({ error: 'Duplicate validation error' });
+            } else {
+                res.statusCode = 500;
+                res.send({ error: 'Server error' });
+            }
+            console.log('Internal error(%d): %s',res.statusCode,err.message);
+        }
+      });
+    } else {
+      console.log(err);
+      res.statusCode=400;
+      res.send({ error: 'User not found in DB'});
+    }
   });
 };
