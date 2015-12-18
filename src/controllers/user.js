@@ -9,7 +9,7 @@ exports.postUsers = function(req, res) {
   });
   user.save(function(err, erg) {
       if(!err) {
-        console.log('User created');
+      //  console.log('User created');
         res.format({
           'application/json': function(){
             res.json({ message: 'Created user ' + req.body.username });
@@ -53,7 +53,7 @@ exports.deleteUser = function(req, res) {
     } else {
       res.format({
         'application/json': function(){
-          res.json( { message: 'Deleted user ' + user.username } );
+          res.json( { message: 'Deleted user ' + user._id } );
         }});
     }
   });
@@ -61,14 +61,13 @@ exports.deleteUser = function(req, res) {
 
 //This export handle HTTP PUT and update a USER trough the given params in the Mongo DB
 exports.putUser = function(req, res) {
-  console.log(req);
   User.findById(req.params.user_id, function(err, user) {
     if(!err) {
-      console.log('User: '+user._id+' found! Setting update params...');
+    //  console.log('User: '+user._id+' found! Setting update params...');
       user.username = req.body.username;
       user.email = req.body.email;
       user.password = req.body.password;
-      console.log('updated user: '+user);
+    //  console.log('updated user: '+user);
       //calling save function to update the specific user!
       user.save(function(err) {
         if (!err) {

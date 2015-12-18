@@ -4,7 +4,7 @@ exports.createGames = function(numberOfGames, done) {
   var created = 0;
   var games = {};
   for(var i = 0; i < numberOfGames; i++) {
-    games[i] = new Game({ adress: 'Street_' + i });
+    games[i] = new Game({ adress: 'Street_' + i , lat: 1234, lng: 4321});
   };
   for(var index in games) {
     var game = games[index];

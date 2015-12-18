@@ -8,7 +8,7 @@ var GameSchema = new mongoose.Schema({
   username: {
     type: String,
   },
-  address: String,
+  adress: String,
   lat: Number,
   lng: Number
   //TODO: validate and trim
