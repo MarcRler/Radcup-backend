@@ -4,7 +4,7 @@ exports.postGames = function(req, res) {
   var game = new Game();
 
 
-  // game.userId = req.user._id;
+  game.userId = req.user._id;
   //game.username = req.body.username;
   game.adress = req.body.adress;
   game.lat = req.body.lat;
@@ -66,24 +66,52 @@ exports.getGame = function(req, res) {
 };
 
 exports.putGame = function(req, res) {
-  Game.update({userId: req.user._id, _id: req.params.game_id },
-    {
-      adress: req.body.adress
-      //TODO: all changable game values
-    },
-    function(err, result, raw) {
-    if (err)
-      res.send(err);
+  Game.findById(req.params.game_id, function(err, game) {
+    if (!err) {
+      game.adress= req.body.adress;
+      game.lat=req.body.lat;
+      game.lng=req.body.lng;
+      game.userId=req.user._id;
+      game.save(function(err) {
+        if(!err) {
+          res.json(game);
+        } else {
+          console.log(err);
+          if(err.name == 'ValidationError') {
+              res.statusCode = 400;
+              res.send({ error: 'Validation error' });
+          } else if (err.name == 'MongoError' && err.code == 11000) {
+              res.statusCode = 400;
+              res.send({ error: 'Duplicate validation error' });
+          } else {
+              res.statusCode = 500;
+              res.send({ error: 'Server error' });
+          }
+          console.log('Internal error(%d): %s',res.statusCode,err.message);
+      }
+      });
+    } else {
+      console.log(err);
+      res.statusCode=400;
+      res.send({ error: 'User not found in DB'});
+    }
 
-      res.json(result);
   });
 };
 
 exports.deleteGame = function(req, res) {
-  Game.remove({userId: req.user._id, _id: req.params.game_id }, function(err) {
-   if (err)
-     res.send(err);
-
-   res.json(Game);
+  Game.findByIdAndRemove(req.params.game_id, function(err, game) {
+    if (err) {
+    res.format({
+      'application/json': function(){
+        res.send({ error: err });
+        res.send(404,err);
+      }});
+    } else {
+      res.format({
+        'application/json': function(){
+          res.json( { message: 'Deleted game ' + game._id } );
+        }});
+    }
   });
 };
