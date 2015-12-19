@@ -13,7 +13,7 @@ describe('Games API Testsuite.', function() {
     password: '1234'
   };
   var game = {
-    adress: 'Some place',
+    address: 'Some place',
     lat: '12345',
     lng: '56773'
   };
@@ -46,7 +46,7 @@ describe('Games API Testsuite.', function() {
       .end(function(err, res){
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
-        expect(res.body.adress).to.eql(game.adress)
+        expect(res.body.address).to.eql(game.address)
         done();
       });
   });
@@ -63,10 +63,10 @@ describe('Games API Testsuite.', function() {
   });
 
   it('should post a game and update it', function(done) {
-    var newAdress = 'a other place';
+    var newAddress = 'a other place';
     var gameId;
     var newGame={
-      adress: 'Some place 2',
+      address: 'Some place 2',
       lat: '433222224',
       lng: '532426773'
     };
@@ -78,16 +78,16 @@ describe('Games API Testsuite.', function() {
       .end(function(err, res){
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
-        expect(res.body.adress).to.eql(newGame.adress)
+        expect(res.body.address).to.eql(newGame.address)
         gameId=res.body._id;
         request(server.app)
           .put('/api/games/'+gameId)
           .auth(user.email, user.password)
-          .send( {adress: newAdress, lat:'44444', lng: '42222'})
+          .send( {address: newAddress, lat:'44444', lng: '42222'})
           .end(function(err, res){
             expect(err).to.eql(null);
             expect(res.status).to.eql(200);
-            expect(res.body.adress).to.eql(newAdress);
+            expect(res.body.address).to.eql(newAddress);
             expect(res.body.lat).to.eql('44444');
             expect(res.body.lng).to.eql('42222');
             done();
@@ -99,7 +99,7 @@ describe('Games API Testsuite.', function() {
 
   it('should delete a game', function(done) {
     var newGame2={
-      adress: 'Some place 3',
+      address: 'Some place 3',
       lat: '1337',
       lng: '2323'
     };
@@ -111,7 +111,7 @@ describe('Games API Testsuite.', function() {
       .end(function(err, res){
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
-        expect(res.body.adress).to.eql(newGame2.adress)
+        expect(res.body.address).to.eql(newGame2.address)
         gameId=res.body._id;
         request(server.app)
           .delete('/api/games/' + gameId)

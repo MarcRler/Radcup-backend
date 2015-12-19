@@ -6,7 +6,7 @@ exports.postGames = function(req, res) {
 
   game.userId = req.user._id;
   //game.username = req.body.username;
-  game.adress = req.body.adress;
+  game.address = req.body.address;
   game.lat = req.body.lat;
   game.lng = req.body.lng;
   // game.city = req.body.city;
@@ -68,7 +68,7 @@ exports.getGame = function(req, res) {
 exports.putGame = function(req, res) {
   Game.findById(req.params.game_id, function(err, game) {
     if (!err) {
-      game.adress= req.body.adress;
+      game.address= req.body.address;
       game.lat=req.body.lat;
       game.lng=req.body.lng;
       game.userId=req.user._id;
