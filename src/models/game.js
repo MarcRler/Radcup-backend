@@ -13,6 +13,8 @@ var GameSchema = new mongoose.Schema({
     playerTwo: { type: String, default: 'freeSlot' }
   }
 });
+module.exports = mongoose.model('Game', GameSchema);
+
 //TODO: validate and trim
  //city: String,
 // postalCode: Number,
