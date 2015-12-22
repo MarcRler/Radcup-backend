@@ -42,6 +42,12 @@ router.route('/games/:game_id')
   .put(authController.isAuthenticated, gameController.putGame)
   .delete(authController.isAuthenticated, gameController.deleteGame)
 
+router.route('/joinableGames')
+  .get(authController.isAuthenticated, gameController.joinableGames)
+
+router.route('/mygames')
+    .get(authController.isAuthenticated, gameController.myGames);
+    
 router.route('/users')
   .post(userController.postUsers);
 

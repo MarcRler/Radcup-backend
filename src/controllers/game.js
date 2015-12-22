@@ -2,35 +2,15 @@ var Game = require('../models/game');
 
 exports.postGames = function(req, res) {
   var game = new Game();
+  game.host = req.user.username
+  game.desc = req.body.desc
+  game.lat = req.body.lat
+  game.lng = req.body.lng
+  game.teamRed.playerOne = req.user._id
+  game.teamRed.playerTwo = req.body.redOne
+  game.teamBlue.playerOne = req.body.blueOne
+  game.teamBlue.playerTwo = req.body.blueTwo
 
-
-  game.userId = req.user._id;
-  //game.username = req.body.username;
-  game.address = req.body.address;
-  game.lat = req.body.lat;
-  game.lng = req.body.lng;
-  // game.city = req.body.city;
-  // game.postalCode = req.body.postalCode;
-  // game.latitude = req.body.latitude
-  // game.longitude = req.body.longitude;
-  // game.meetingPoint = req.body.meetingPoint;
-  // game.date = req.body.date;
-  // game.players = req.body.players;
-  // game.description = req.body.description
-  // game.players: {
-  //   game.teamRed: {
-  //     game.id = req.body.id
-  //   },
-  //   game.teamBlue: {
-  //     game.id = req.body.id
-  //   }
-  // },
-  // game.results: {
-  //   game.startTime = req.body.startTime;
-  //   game.endTime = req.body.endTime
-  //   game.winner = req.body.winner;
-  //   game.loserCupsLeft = req.body.loserCupsLeft;
-  // }
   game.save(function(err,erg) {
     if (err) {
     res.format({
@@ -68,10 +48,10 @@ exports.getGame = function(req, res) {
 exports.putGame = function(req, res) {
   Game.findById(req.params.game_id, function(err, game) {
     if (!err) {
-      game.address= req.body.address;
-      game.lat=req.body.lat;
-      game.lng=req.body.lng;
-      game.userId=req.user._id;
+      game.desc= req.body.desc;
+      game.teamRed.playerTwo = req.body.redTwo;
+      game.teamBlue.playerOne = req.body.blueOne;
+      game.teamBlue.playerTwo = req.body.blueTwo;
       game.save(function(err) {
         if(!err) {
           res.json(game);
@@ -113,5 +93,23 @@ exports.deleteGame = function(req, res) {
           res.json( { message: 'Deleted game ' + game._id } );
         }});
     }
+  });
+};
+
+exports.joinableGames = function(req, res) {
+  Game.find({ 'teamRed.playerOne': { $nin: req.user._id } }, function(err, games) {
+    if (err)
+      res.send(err);
+
+    res.json(games);
+  });
+};
+
+exports.myGames = function(req, res) {
+  Game.find({ 'teamRed.playerOne': req.user._id }, function(err, games) {
+    if (err)
+      res.send(err);
+
+    res.json(games);
   });
 };
