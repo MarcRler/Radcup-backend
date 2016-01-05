@@ -47,7 +47,7 @@ router.route('/joinableGames')
 
 router.route('/mygames')
     .get(authController.isAuthenticated, gameController.myGames);
-    
+
 router.route('/users')
   .post(userController.postUsers);
 
@@ -57,6 +57,9 @@ router.route('/users/:email')
 router.route('/users/:user_id')
   .put(authController.isAuthenticated, userController.putUser)
   .delete(authController.isAuthenticated, userController.deleteUser);
+
+router.route('/users/username/:user_id')
+  .get(userController.getUsername);
 
 module.exports.start = function(started) {
   module.exports.app = app.listen(port, function () {

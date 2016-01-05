@@ -41,6 +41,15 @@ exports.getUser = function(req, res) {
   });
 };
 
+exports.getUsername = function(req, res) {
+  User.findById(req.params.user_id, function(err, user) {
+    if (err)
+      res.send(err);
+
+    res.json(user.username);
+  });
+};
+
 //This export handle HTTP DELETE and delete a USER trough his user_id in the Mongo DB
 exports.deleteUser = function(req, res) {
   User.findByIdAndRemove(req.params.user_id, function(err, user) {
