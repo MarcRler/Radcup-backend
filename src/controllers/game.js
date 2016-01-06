@@ -45,7 +45,6 @@ exports.getGame = function(req, res) {
 };
 
 exports.putGame = function(req, res) {
-  console.log(req.body);
   Game.findById(req.params.game_id, function(err, game) {
     if (!err) {
       game.desc= req.body.desc;
@@ -97,7 +96,11 @@ exports.deleteGame = function(req, res) {
 };
 
 exports.joinableGames = function(req, res) {
-  Game.find({ 'players.one': { $nin: req.user.username } }, function(err, games) {
+  Game.find( {$nor : [ { 'players.one':  req.user.username},
+    { 'players.two': req.user.username},
+    { 'players.three': req.user.username},
+    { 'players.four': req.user.username}] },
+    function (err, games) {
     if (err)
       res.send(err);
 
@@ -106,7 +109,10 @@ exports.joinableGames = function(req, res) {
 };
 
 exports.myGames = function(req, res) {
-  Game.find({ 'players.one': req.user.username }, function(err, games) {
+  Game.find({$or : [ { 'players.one':  req.user.username},
+    { 'players.two': req.user.username},
+    { 'players.three': req.user.username},
+    { 'players.four': req.user.username} ] }, function(err, games) {
     if (err)
       res.send(err);
 
