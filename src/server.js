@@ -58,9 +58,6 @@ router.route('/users/:user_id')
   .put(authController.isAuthenticated, userController.putUser)
   .delete(authController.isAuthenticated, userController.deleteUser);
 
-router.route('/users/username/:user_id')
-  .get(userController.getUsername);
-
 module.exports.start = function(started) {
   module.exports.app = app.listen(port, function () {
     console.log('Listening at port %s', port);

@@ -5,7 +5,7 @@ exports.postGames = function(req, res) {
   game.desc = req.body.desc
   game.lat = req.body.lat
   game.lng = req.body.lng
-  game.players.one = req.user._id
+  game.players.one = req.user.username
   game.players.two = req.body.two
   game.players.three = req.body.three
   game.players.four = req.body.four
@@ -97,7 +97,7 @@ exports.deleteGame = function(req, res) {
 };
 
 exports.joinableGames = function(req, res) {
-  Game.find({ 'players.one': { $nin: req.user._id } }, function(err, games) {
+  Game.find({ 'players.one': { $nin: req.user.username } }, function(err, games) {
     if (err)
       res.send(err);
 
@@ -106,7 +106,7 @@ exports.joinableGames = function(req, res) {
 };
 
 exports.myGames = function(req, res) {
-  Game.find({ 'players.one': req.user._id }, function(err, games) {
+  Game.find({ 'players.one': req.user.username }, function(err, games) {
     if (err)
       res.send(err);
 
