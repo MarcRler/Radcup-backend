@@ -45,12 +45,13 @@ exports.getGame = function(req, res) {
 };
 
 exports.putGame = function(req, res) {
+  console.log(req.body);
   Game.findById(req.params.game_id, function(err, game) {
     if (!err) {
       game.desc= req.body.desc;
-      game.players.two = req.body.two;
-      game.players.three = req.body.three;
-      game.players.four = req.body.four;
+      game.players.two = req.body.players.two;
+      game.players.three = req.body.players.three;
+      game.players.four = req.body.players.four;
       game.save(function(err) {
         if(!err) {
           res.json(game);
