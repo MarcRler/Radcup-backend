@@ -9,6 +9,14 @@ var GameSchema = new mongoose.Schema({
     two: { type: String, default: 'freeSlot' },
     three: { type: String, default: 'freeSlot' },
     four: { type: String, default: 'freeSlot' }
+  },
+  state: { type: String },
+  time : { type: Date},
+  results: {
+    startTime: {type: Date, default: '1'},
+    endTime: {type: Date, default: '1'},
+    winner: {type: String, default: 'No Winner'},
+    loserCupsLeft: {type : Number, default : '100'}
   }
 });
 module.exports = mongoose.model('Game', GameSchema);
@@ -30,12 +38,3 @@ module.exports = mongoose.model('Game', GameSchema);
 //     id: String
 //   }
 // },
-// results: {
-//   startTime: Number,
-//   endTime: Number,
-//   winner: String,
-//   loserCupsLeft: Number,
-//   onFire: {
-//     id:String
-//   }
-// }

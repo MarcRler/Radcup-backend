@@ -1,29 +1,36 @@
 var Game = require('../models/game');
 
+
 exports.postGames = function(req, res) {
   var game = new Game();
   game.desc = req.body.desc
   game.lat = req.body.lat
   game.lng = req.body.lng
+  game.time = req.body.time
+  game.state = req.body.state;
   game.players.one = req.user.username
   game.players.two = req.body.two
   game.players.three = req.body.three
   game.players.four = req.body.four
 
-  game.save(function(err,erg) {
+  game.save(function(err, erg) {
     if (err) {
-    res.format({
-      'application/json': function(){
-        res.send({ error: err });
-        res.send(404,err);
-      }});
+      res.format({
+        'application/json': function() {
+          res.send({
+            error: err
+          });
+          res.send(404, err);
+        }
+      });
     } else {
       res.format({
-        'application/json': function(){
-          res.send(200,erg);
-        }});
-      }
-    });
+        'application/json': function() {
+          res.send(200, erg);
+        }
+      });
+    }
+  });
 };
 
 exports.getGames = function(req, res) {
@@ -47,32 +54,59 @@ exports.getGame = function(req, res) {
 exports.putGame = function(req, res) {
   Game.findById(req.params.game_id, function(err, game) {
     if (!err) {
-      game.desc= req.body.desc;
+      game.desc = req.body.desc;
       game.players.two = req.body.players.two;
       game.players.three = req.body.players.three;
       game.players.four = req.body.players.four;
+      game.state = req.body.state;
+      game.results.winner = req.body.results.winner;
+      game.results.loserCupsLeft = req.body.results.loserCupsLeft;
+      game.results.startTime = req.body.results.startTime;
+      game.results.endTime = req.body.results.endTime;
+
+      if (game.players.two != "freeSlot" && game.players.three != "freeSlot" && game.players.four != "freeSlot") {
+        if (game.state != "started" && game.state != "finished") {
+          game.state = "startable";
+        }
+      }
+
+      console.log("State: "+game.state);
+      console.log("Winner: "+game.results.winner);
+      console.log("CupsLeft: "+game.results.loserCupsLeft);
+      console.log("StartTime :"+game.results.startTime);
+      console.log("EndTime :"+game.results.endTime);
+
+
       game.save(function(err) {
-        if(!err) {
+        if (!err) {
           res.json(game);
         } else {
           console.log(err);
-          if(err.name == 'ValidationError') {
-              res.statusCode = 400;
-              res.send({ error: 'Validation error' });
+          if (err.name == 'ValidationError') {
+            res.statusCode = 400;
+            res.send({
+              error: 'Validation error'
+            });
           } else if (err.name == 'MongoError' && err.code == 11000) {
-              res.statusCode = 400;
-              res.send({ error: 'Duplicate validation error' });
+            res.statusCode = 400;
+            res.send({
+              error: 'Duplicate validation error'
+            });
           } else {
-              res.statusCode = 500;
-              res.send({ error: 'Server error' });
+            res.statusCode = 500;
+            res.send({
+              error: 'Server error'
+            });
           }
-          console.log('Internal error(%d): %s',res.statusCode,err.message);
-      }
+          console.log('Internal error(%d): %s', res.statusCode, err.message);
+        }
       });
     } else {
       console.log(err);
-      res.statusCode=400;
-      res.send({ error: 'User not found in DB'});
+      res.statusCode = 400;
+      res.send({
+        error: 'User not found in DB'
+      });
     }
 
   });
@@ -81,38 +115,58 @@ exports.putGame = function(req, res) {
 exports.deleteGame = function(req, res) {
   Game.findByIdAndRemove(req.params.game_id, function(err, game) {
     if (err) {
-    res.format({
-      'application/json': function(){
-        res.send({ error: err });
-        res.send(404,err);
-      }});
+      res.format({
+        'application/json': function() {
+          res.send({
+            error: err
+          });
+          res.send(404, err);
+        }
+      });
     } else {
       res.format({
-        'application/json': function(){
-          res.json( { message: 'Deleted game ' + game._id } );
-        }});
+        'application/json': function() {
+          res.json({
+            message: 'Deleted game ' + game._id
+          });
+        }
+      });
     }
   });
 };
 
 exports.joinableGames = function(req, res) {
-  Game.find( {$nor : [ { 'players.one':  req.user.username},
-    { 'players.two': req.user.username},
-    { 'players.three': req.user.username},
-    { 'players.four': req.user.username}] },
-    function (err, games) {
-    if (err)
-      res.send(err);
+  Game.find({
+      $nor: [{
+        'players.one': req.user.username
+      }, {
+        'players.two': req.user.username
+      }, {
+        'players.three': req.user.username
+      }, {
+        'players.four': req.user.username
+      }]
+    },
+    function(err, games) {
+      if (err)
+        res.send(err);
 
-    res.json(games);
-  });
+      res.json(games);
+    });
 };
 
 exports.myGames = function(req, res) {
-  Game.find({$or : [ { 'players.one':  req.user.username},
-    { 'players.two': req.user.username},
-    { 'players.three': req.user.username},
-    { 'players.four': req.user.username} ] }, function(err, games) {
+  Game.find({
+    $or: [{
+      'players.one': req.user.username
+    }, {
+      'players.two': req.user.username
+    }, {
+      'players.three': req.user.username
+    }, {
+      'players.four': req.user.username
+    }]
+  }, function(err, games) {
     if (err)
       res.send(err);
 
