@@ -13,10 +13,10 @@ var GameSchema = new mongoose.Schema({
   state: { type: String },
   time : { type: Date},
   results: {
-    startTime: {type: Date, default: '1'},
-    endTime: {type: Date, default: '1'},
+    startTime: {type: Date, default: null},
+    endTime: {type: Date, default: null},
     winner: {type: String, default: 'No Winner'},
-    loserCupsLeft: {type : Number, default : '100'}
+    loserCupsLeft: {type : Number, default : '6'}
   }
 });
 module.exports = mongoose.model('Game', GameSchema);
