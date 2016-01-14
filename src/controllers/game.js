@@ -70,11 +70,7 @@ exports.putGame = function(req, res) {
         }
       }
 
-      console.log("State: "+game.state);
-      console.log("Winner: "+game.results.winner);
-      console.log("CupsLeft: "+game.results.loserCupsLeft);
-      console.log("StartTime :"+game.results.startTime);
-      console.log("EndTime :"+game.results.endTime);
+  
 
 
       game.save(function(err) {

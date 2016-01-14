@@ -13,7 +13,7 @@ describe('Games API Testsuite.', function() {
     password: '1234'
   };
   var game = {
-    address: 'Some place',
+    desc: 'Some place',
     lat: '12345',
     lng: '56773'
   };
@@ -46,7 +46,10 @@ describe('Games API Testsuite.', function() {
       .end(function(err, res){
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
-        expect(res.body.address).to.eql(game.address)
+        expect(res.body.desc).to.eql(game.desc);
+        expect(res.body.results.winner).to.eql('No Winner');
+        expect(res.body.results.endTime).to.eql(null);
+        expect(res.body.players.one).to.eql(user.username);
         done();
       });
   });
@@ -57,18 +60,31 @@ describe('Games API Testsuite.', function() {
       .end(function(err, res){
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
-        expect(res.body.length).to.eql(6);
+        expect(res.body.length).to.be.above(4);
         done();
       });
   });
 
   it('should post a game and update it', function(done) {
-    var newAddress = 'a other place';
+    var newdesc = 'a other place';
     var gameId;
     var newGame={
-      address: 'Some place 2',
+      desc: 'Some place 2',
       lat: '433222224',
-      lng: '532426773'
+      lng: '532426773',
+      players:{
+        one: user.username,
+        two: 'freeSlot',
+        three: 'freeSlot',
+        four: 'freeSlot'
+      },results: {
+        winner:"",
+        loserCupsLeft: 6,
+        startTime:"",
+        endTime:""
+
+      }
+
     };
     //First post a game, then update this game
     request(server.app)
@@ -78,18 +94,19 @@ describe('Games API Testsuite.', function() {
       .end(function(err, res){
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
-        expect(res.body.address).to.eql(newGame.address)
+        expect(res.body.desc).to.eql(newGame.desc)
         gameId=res.body._id;
+        newGame.desc='newVal';
+        newGame.results.winner='siegertyp';
         request(server.app)
           .put('/api/games/'+gameId)
           .auth(user.email, user.password)
-          .send( {address: newAddress, lat:'44444', lng: '42222'})
+          .send( newGame)
           .end(function(err, res){
             expect(err).to.eql(null);
             expect(res.status).to.eql(200);
-            expect(res.body.address).to.eql(newAddress);
-            expect(res.body.lat).to.eql('44444');
-            expect(res.body.lng).to.eql('42222');
+            expect(res.body.desc).to.eql(newGame.desc);
+            expect(res.body.results.winner).to.eql('siegertyp');
             done();
           });
       });
@@ -99,7 +116,7 @@ describe('Games API Testsuite.', function() {
 
   it('should delete a game', function(done) {
     var newGame2={
-      address: 'Some place 3',
+      desc: 'Some place 3',
       lat: '1337',
       lng: '2323'
     };
@@ -111,7 +128,7 @@ describe('Games API Testsuite.', function() {
       .end(function(err, res){
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
-        expect(res.body.address).to.eql(newGame2.address)
+        expect(res.body.desc).to.eql(newGame2.desc)
         gameId=res.body._id;
         request(server.app)
           .delete('/api/games/' + gameId)
@@ -125,3 +142,4 @@ describe('Games API Testsuite.', function() {
       });
   });
 });
+//evtl. noch joinableGames testen 
