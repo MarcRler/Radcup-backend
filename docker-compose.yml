@@ -1,14 +1,18 @@
+db:
+  image: mongo
+  ports: 
+   - "27017:27017"
+mongo-importer:
+  build: . 
+  links: 
+  - db
 web:
-  build: .
+  build: ./web
   links:
    - db
   ports:
-   - "3009:3009"
+   - "3000:3000"
   volumes:
    - ./src:/home/env
-  environment: 
+  environment:
    NODE_ENV: development
-db:
-  image: mongo:latest
-  ports: 
-   - "27017:27017"
