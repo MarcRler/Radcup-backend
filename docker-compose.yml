@@ -16,3 +16,10 @@ web:
    - ./src:/home/env
   environment:
    NODE_ENV: development
+ionic:
+ build: ./ion
+ command: /bin/bash
+ ports:
+  - "8100:8100" 
+  - "35729:35729"
+ 
