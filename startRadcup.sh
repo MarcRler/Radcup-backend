@@ -106,13 +106,15 @@ selection=
 until [ "$selection" = "0" ]; do
     echo ""
     echo "Radcup MENU"
+    echo "please use crtl-c if you want to stop the running application"
+    echo ""
     echo "1 - Use Dockerip (MAC)"
     echo "2 - Use localhost "
     echo "3 - Use a other ip "
-    echo "4 - start radcup docker containers"
-    echo "5 - dev mode "
-    echo "6 - get logins for radcup"
-    echo "7 - run testsuitei - please read the output carefully:" 
+    echo "4 - run testsuite containers - please read the output carefully:" 
+    echo "5 - get logins for radcup"
+    echo "6 - start radcup docker containers"
+    echo "99 - dev mode "
     echo ""
     echo "0 - exit program"
     echo ""
@@ -123,12 +125,12 @@ until [ "$selection" = "0" ]; do
         1 ) dockerip ; press_enter ;;
         2 ) localhostip ; press_enter ;;
         3 ) otherip ; press_enter;;
-        4 ) calldocker ; press_enter;;
-	5 ) killion ; press_enter;;
-        6 ) getlogins ; press_enter;; 
-        7 ) testsuite ; press_enter;;
+        6 ) calldocker ; press_enter;;
+	99 ) killion ; press_enter;;
+        5 ) getlogins ; press_enter;; 
+        4 ) testsuite ; press_enter;;
         0 ) exit ;;
-        * ) echo "Please enter 1, 2, 3, 4, 5, 6, 7 or 0"; press_enter
+        * ) echo "Please enter 1, 2, 3, 4, 5, 6, 99 or 0"; press_enter
     esac
 done
 
