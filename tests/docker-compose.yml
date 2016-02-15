@@ -1,0 +1,15 @@
+db:
+  image: mongo
+  ports: 
+   - "27017:27017"
+mongo-importer:
+  build: ../. 
+  links: 
+  - db
+test:
+  build: .
+  links:
+   - db
+  ports:
+   - "3000:3000"
+  

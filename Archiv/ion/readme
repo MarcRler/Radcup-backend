@@ -1,7 +1,0 @@
-docker run -ti -p 8100:8100 -p 35729:35729 -v /Users/Immi/Dropbox/Studium/Skripte_WS2015-2016_IH/MobileWebApp/Beerpong5000/git/Radcup-client/:/myApp 0f6d7f5acaaa /bin/bash
-Todo 4 dockerize: 
-anpassen der src/config.js auf db statt ip für node<->mongo linking
-ionic container muss aus yml mit env variable gerufen werden für dockerhostname (dockermachine ip oder localhost) 
-im dockerfile ziehen des client repos und austauschen der env variable 
-
-

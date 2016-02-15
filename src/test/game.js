@@ -142,4 +142,4 @@ describe('Games API Testsuite.', function() {
       });
   });
 });
-//evtl. noch joinableGames testen 
+//evtl. noch joinableGames testen

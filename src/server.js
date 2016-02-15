@@ -7,7 +7,17 @@ var expressSession = require('express-session');
 var config = require('./config');
 mongoose.connect(config);
 var enableDestroy = require('server-destroy');
-
+/*
+ Use this for HTTPS (not recommended if you want use the testsuite)!!!!
+var fs = require('fs');
+var https = require('https');
+var key = fs.readFileSync('./key.pem');
+var cert = fs.readFileSync('./cert.pem')
+var https_options = {
+    key: key,
+    cert: cert
+};
+*/
 var gameController = require('./controllers/game');
 var userController = require('./controllers/user');
 var authController = require('./controllers/auth');
@@ -59,7 +69,8 @@ router.route('/users/:user_id')
   .delete(authController.isAuthenticated, userController.deleteUser);
 
 module.exports.start = function(started) {
-  module.exports.app = app.listen(port, function () {
+// ONLY USE 4 HTTPS!!!   module.exports.app = https.createServer(https_options, app).listen(port, function () {
+module.exports.app = app.listen(port, function () {
     console.log('Listening at port %s', port);
     enableDestroy(module.exports.app);
     if (started) started();

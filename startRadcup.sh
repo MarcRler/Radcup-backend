@@ -36,11 +36,35 @@ function killion
  echo "call ionic serve from your client!" 
 }
 
+function testsuite
+{
+ docker stop radcupbackend_web_1
+ docker stop radcupbackend_ionic_1
+ docker stop radcupbackend_db_1
+ docker-compose -f tests/docker-compose.yml build
+ docker-compose -f tests/docker-compose.yml up 
+}
+
+function getlogins
+{
+
+echo "RadcupUserName:Email:Password"
+echo "userone:1@1.de:123"
+echo "usertwo:2@2.de:123"
+echo "userthree:3@3.de:123"
+echo "userfour:4@4.de:123"
+echo "immae:immi@immi.de:123"
+echo "manu:manu@manu.de:123"
+echo "pascal:pascal@pascal.de:123"
+
+}
+
 function dockerip 
 {
   echo "setting dockerip in Dockerfiles"
   sed -i -E "s#ENV SERVER=.*#ENV SERVER=192.168.99.100#" web/Dockerfile
   sed -i -E "s#ENV SERVER=.*#ENV SERVER=192.168.99.100#" ion/Dockerfile
+  sed -i -E "s#ENV SERVER=.*#ENV SERVER=192.168.99.100#" tests/Dockerfile
   echo "done.."
 }
 
@@ -49,7 +73,8 @@ function localhostip
  echo "setting localhost in Dockerfiles"
  sed -i -E "s#ENV SERVER=.*#ENV SERVER=localhost#" web/Dockerfile
  sed -i -E "s#ENV SERVER=.*#ENV SERVER=localhost#" ion/Dockerfile
- echo "done.."
+ sed -i -E "s#ENV SERVER=.*#ENV SERVER=localhost#" tests/Dockerfile
+echo "done.."
 }
 
 function otherip
@@ -59,7 +84,9 @@ function otherip
  echo "setting:"$ip
  sed -i -E "s#ENV SERVER=.*#ENV SERVER=$ip#" web/Dockerfile
  sed -i -E "s#ENV SERVER=.*#ENV SERVER=$ip#" ion/Dockerfile 
+ sed -i -E "s#ENV SERVER=.*#ENV SERVER=$ip#" tests/Dockerfile 
 }
+ 
 
 function calldocker
 {
@@ -84,6 +111,8 @@ until [ "$selection" = "0" ]; do
     echo "3 - Use a other ip "
     echo "4 - start radcup docker containers"
     echo "5 - dev mode "
+    echo "6 - get logins for radcup"
+    echo "7 - run testsuitei - please read the output carefully:" 
     echo ""
     echo "0 - exit program"
     echo ""
@@ -96,8 +125,10 @@ until [ "$selection" = "0" ]; do
         3 ) otherip ; press_enter;;
         4 ) calldocker ; press_enter;;
 	5 ) killion ; press_enter;;
+        6 ) getlogins ; press_enter;; 
+        7 ) testsuite ; press_enter;;
         0 ) exit ;;
-        * ) echo "Please enter 1, 2, 3, 4 or 0"; press_enter
+        * ) echo "Please enter 1, 2, 3, 4, 5, 6, 7 or 0"; press_enter
     esac
 done
 
