@@ -11,13 +11,14 @@ oooooooooo.o o88o     o8888o o888bood8P      Y8bood8P       YbodP     o888o     
  888     888  .ooooo.   .ooooo.  oooo d8b oo.ooooo.   .ooooo.  ooo. .oo.    .oooooooo          .8 888.      888   .d88   888   .d88 
  888oooo888  d88   88b d88   88b  888  8P  888   88b d88   88b  888P Y88b  888   88b          .8   888.     888ooo88P    888ooo88P   
  888     88b 888ooo888 888ooo888  888      888   888 888   888  888   888  888   888         .88ooo8888.    888          888         
- 888    .88P 888    .o 888    .o  888      888   888 888   888  888   888   88bod8P         .8      888.   888          888         
+ 888    .88P 888    .o 888    .o  888      888   888 888   888  888   888   88bod8P         .8       888.   888          888         
 o888bood8P    Y8bod8P   Y8bod8P  d888b     888bod8P   Y8bod8P  o888o o888o  8oooooo.       o88o     o8888o o888o        o888o        
                                            888                             d      YD                                                 
                                           o888o                             Y88888P                                                 
                                                                                                                                       
 - ih027, pw032, mn031 WS15/16 Mobile Web Applications -                                                                                                                                     
  Hint: you need a "docker" & "docker-compose" installation to run the APP!
+       if a error in the web1 container occurs please check your ip address, maybe you have to change it with option 3)
 
 "
 
@@ -27,6 +28,12 @@ function press_enter
     echo -n "Press Enter to continue"
     read
     clear
+}
+
+function killion
+{
+ docker stop radcupbackend_ionic_1
+ echo "call ionic serve from your client!" 
 }
 
 function dockerip 
@@ -73,9 +80,10 @@ until [ "$selection" = "0" ]; do
     echo ""
     echo "Radcup MENU"
     echo "1 - Use Dockerip (MAC)"
-    echo "2 - Use localhost (Linux)"
+    echo "2 - Use localhost "
     echo "3 - Use a other ip "
     echo "4 - start radcup docker containers"
+    echo "5 - dev mode "
     echo ""
     echo "0 - exit program"
     echo ""
@@ -87,7 +95,8 @@ until [ "$selection" = "0" ]; do
         2 ) localhostip ; press_enter ;;
         3 ) otherip ; press_enter;;
         4 ) calldocker ; press_enter;;
-	0 ) exit ;;
+	5 ) killion ; press_enter;;
+        0 ) exit ;;
         * ) echo "Please enter 1, 2, 3, 4 or 0"; press_enter
     esac
 done
