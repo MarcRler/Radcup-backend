@@ -19,7 +19,8 @@ o888bood8P    Y8bod8P   Y8bod8P  d888b     888bod8P   Y8bod8P  o888o o888o  8ooo
 - ih027, pw032, mn031 WS15/16 Mobile Web Applications -                                                                                                                                     
  Hint: you need a "docker" & "docker-compose" installation to run the APP!
        if a error in the web1 container occurs please check your ip address, maybe you have to change it with option 3)
-
+       The ionic Container will not work under windows because of /usr/bin/expect is missing there... 
+       We had issues with many linux systems. We recommed to use docker on macOSX. But if you want to run the APP in Linux try 3) with 172.17.0.1.
 "
 
 function press_enter
@@ -80,11 +81,11 @@ echo "done.."
 function otherip
 {
  echo "setting otherip in Dockerfiles"
- read -p "Please set a valid ip-address:" ip
- echo "setting:"$ip
- sed -i -E "s#ENV SERVER=.*#ENV SERVER=$ip#" web/Dockerfile
- sed -i -E "s#ENV SERVER=.*#ENV SERVER=$ip#" ion/Dockerfile 
- sed -i -E "s#ENV SERVER=.*#ENV SERVER=$ip#" tests/Dockerfile 
+ read -p "Please set a valid ip-address for the db (172.17.0.1)" ip1
+ echo "setting:"$ip1
+ sed -i -E "s#ENV SERVER=.*#ENV SERVER=$ip1#" web/Dockerfile
+ sed -i -E "s#ENV SERVER=.*#ENV SERVER=$ip1#" ion/Dockerfile 
+ sed -i -E "s#ENV SERVER=.*#ENV SERVER=$ip1#" tests/Dockerfile 
 }
  
 
