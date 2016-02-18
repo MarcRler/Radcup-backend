@@ -43,27 +43,48 @@ router.get('/', function(req, res,next) {
 
 app.use('/api', router);
 
+/*
+Get all games or create a new one
+*/
 router.route('/games')
   .post(authController.isAuthenticated, gameController.postGames)
   .get(gameController.getGames)
 
+/*
+Get a game, update a game or delete a game by ID
+*/
 router.route('/games/:game_id')
-  .get(gameController.getGame)//Macht kein sinn spiele byID nur als Auth User raus zu geben!
+  .get(gameController.getGame)
   .put(authController.isAuthenticated, gameController.putGame)
   .delete(authController.isAuthenticated, gameController.deleteGame)
 
+/*
+Get all games, which have a place to join
+*/
 router.route('/joinableGames')
   .get(authController.isAuthenticated, gameController.joinableGames)
 
+/*
+Get all games, a user has taken part in or will take part in
+*/
 router.route('/mygames')
     .get(authController.isAuthenticated, gameController.myGames);
 
+/*
+Create a new user
+*/
 router.route('/users')
   .post(userController.postUsers);
 
+/*
+Route for login. Returns the user to the matching email address
+*/
 router.route('/users/:email')
   .get(authController.isAuthenticated, userController.getUser);
 
+/*
+Update or delete a user per ID
+*/
 router.route('/users/:user_id')
   .put(authController.isAuthenticated, userController.putUser)
   .delete(authController.isAuthenticated, userController.deleteUser);

@@ -1,6 +1,8 @@
 var Game = require('../models/game');
 
-
+/*
+Creates a new game
+*/
 exports.postGames = function(req, res) {
   var game = new Game();
   game.desc = req.body.desc
@@ -33,6 +35,9 @@ exports.postGames = function(req, res) {
   });
 };
 
+/*
+Returns all games
+*/
 exports.getGames = function(req, res) {
   Game.find(function(err, games) {
     if (err)
@@ -51,6 +56,9 @@ exports.getGame = function(req, res) {
   });
 };
 
+/*
+Updates a game
+*/
 exports.putGame = function(req, res) {
   Game.findById(req.params.game_id, function(err, game) {
     if (!err) {
@@ -69,9 +77,6 @@ exports.putGame = function(req, res) {
           game.state = "startable";
         }
       }
-
-  
-
 
       game.save(function(err) {
         if (!err) {
@@ -108,6 +113,9 @@ exports.putGame = function(req, res) {
   });
 };
 
+/*
+Deletes a game
+*/
 exports.deleteGame = function(req, res) {
   Game.findByIdAndRemove(req.params.game_id, function(err, game) {
     if (err) {
@@ -131,6 +139,9 @@ exports.deleteGame = function(req, res) {
   });
 };
 
+/*
+Returns all joinable Games for a specific user
+*/
 exports.joinableGames = function(req, res) {
   Game.find({
       $nor: [{
@@ -151,6 +162,9 @@ exports.joinableGames = function(req, res) {
     });
 };
 
+/*
+Returns all games a user has taken part in or will take part in
+*/
 exports.myGames = function(req, res) {
   Game.find({
     $or: [{
