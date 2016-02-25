@@ -1,7 +1,6 @@
-// TODO: WHAT IS HAPPENING WITH THE CALLBACK
-
 var User = require('../../models/user');
-
+/* Anlegen von Testusern für die Testsuite, durch das model.
+*/
 exports.createUser = function(username, email, password, saved) {
   var user = new User({
     username: username,

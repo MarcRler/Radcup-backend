@@ -5,7 +5,7 @@ var should = require('should');
 var setup = require('./setup');
 var gameHelper = require('./helpers/gameHelper');
 var userHelper = require('./helpers/userHelper');
-
+/* Game Testsuite */
 describe('Games API Testsuite.', function() {
   var user = {
     username: 'MarkusMustermann',

@@ -1,5 +1,6 @@
 var Game = require('../../models/game');
-
+/* Anlegen von Testspiele für die Testsuite, durch das model. 
+*/
 exports.createGames = function(numberOfGames, done) {
   var created = 0;
   var games = {};

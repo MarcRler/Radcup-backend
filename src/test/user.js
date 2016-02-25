@@ -5,6 +5,7 @@ var should = require('should');
 var setup = require('./setup');
 var userHelper = require('./helpers/userHelper');
 var id;
+/* User Testsuite */
 describe('User API Testsuite:', function() {
   var user = {
     username: 'HaxMustermann',

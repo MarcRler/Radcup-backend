@@ -90,7 +90,7 @@ router.route('/users/:user_id')
   .delete(authController.isAuthenticated, userController.deleteUser);
 
 module.exports.start = function(started) {
-// ONLY USE 4 HTTPS!!!   module.exports.app = https.createServer(https_options, app).listen(port, function () {
+// ONLY USE for HTTPS!!!   module.exports.app = https.createServer(https_options, app).listen(port, function () {
 module.exports.app = app.listen(port, function () {
     console.log('Listening at port %s', port);
     enableDestroy(module.exports.app);

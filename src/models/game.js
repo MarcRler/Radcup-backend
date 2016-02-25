@@ -1,6 +1,8 @@
 var mongoose =require('mongoose');
+/* Anlegen eines neuen Game Schemas, alle Daten welche in einem Spiel vorhanden
+sein müssen.
+*/
 var GameSchema = new mongoose.Schema({
-  // host: { type: String, require: true },
   desc: { type: String, default: "Let's rad that cup, dayum!", require: true },
   lat: { type: Number },
   lng: { type: Number },
@@ -20,21 +22,3 @@ var GameSchema = new mongoose.Schema({
   }
 });
 module.exports = mongoose.model('Game', GameSchema);
-
-//TODO: validate and trim
- //city: String,
-// postalCode: Number,
-// latitude: String,
-// longitude: String,
-// meetingPoint: String,
-// date: Date,
-// maxPlayer: Number,
-// description: String,
-// players: {
-//   teamRed: {
-//     id: String
-//   },
-//   teamBlue: {
-//     id: String
-//   }
-// },

@@ -1,6 +1,6 @@
 var request = require('supertest');
 var server = require('../server');
-
+/* Teste ob Server sich 2 x starten und beenden lässt*/
 describe('Server Testsuite:', function() {
   beforeEach(server.start);
   afterEach(server.stop);
