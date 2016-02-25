@@ -1,6 +1,6 @@
 FROM debian:wheezy
 
-MAINTAINER garvin [dot] leclaire [at] gmail [dot] com
+MAINTAINER garvin[dot] leclaire [at] gmail [dot] com
 
 # Install basics 
 RUN apt-get update &&  \
