@@ -56,6 +56,57 @@ exports.getGame = function(req, res) {
   });
 };
 
+exports.getStatisticsForPlayer = function(req, res) {
+
+  var username = req.user.username;
+
+  findGamesForUsername(function(dataObject){
+
+    if (dataObject.err)
+      res.send(dataObject.err);
+
+      var statistic = {
+        won:0,
+        lost:0,
+        draw:0,
+        cupsLeft:0
+      }
+     var playedGames = 0;
+     for(game in dataObject.games){
+
+          if(game.status=="finished"){
+            playedGames +=1;
+            checkWinner(statistic,game,username);
+          }
+      }
+      res.json(statistic);
+
+  },username);
+};
+
+ this.checkWinner = function(statistic,game,username){
+
+   switch (game.results.winner) {
+     case "Red": if(game.players.one==username||game.players.two==username){
+                  statistics.won +=1;
+                  }
+                  else{
+                    statistics.lost +=1;
+                  }
+                  break;
+     case "Green": if(game.players.three==username||game.players.four==username){
+                  statistics.won +=1;
+                  }
+                  else{
+                    statistics.lost +=1;
+                  }
+                  break;
+    case "Draw": statistics.draw +=1;
+                  break;
+
+   }
+ }
+
 /*
 Updates a game
 */
@@ -166,20 +217,39 @@ exports.joinableGames = function(req, res) {
 Returns all games a user has taken part in or will take part in
 */
 exports.myGames = function(req, res) {
+
+  findGamesForUsername(function(dataObject){
+
+    if (dataObject.err)
+      res.send(dataObject.err);
+
+      res.json(dataObject.games);
+
+  },req.user.username);
+
+};
+
+
+findGamesForUsername = function(callback,username){
+
   Game.find({
     $or: [{
-      'players.one': req.user.username
+      'players.one': username
     }, {
-      'players.two': req.user.username
+      'players.two': username
     }, {
-      'players.three': req.user.username
+      'players.three': username
     }, {
-      'players.four': req.user.username
+      'players.four': username
     }]
   }, function(err, games) {
-    if (err)
-      res.send(err);
 
-    res.json(games);
+
+    var dataObject ={
+      err:err,
+      games:games
+    }
+
+    callback(dataObject);
   });
-};
+}

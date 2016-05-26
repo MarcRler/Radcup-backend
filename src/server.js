@@ -58,8 +58,14 @@ router.route('/games/:game_id')
   .put(authController.isAuthenticated, gameController.putGame)
   .delete(authController.isAuthenticated, gameController.deleteGame)
 
+  /*
+  Get statistics for a specific user
+  */
+router.route('/statistics')
+    .get(authController.isAuthenticated,gameController.getStatisticsForPlayer)
+
 /*
-Get all games, which have a place to join
+Get all games, that have a place to join
 */
 router.route('/joinableGames')
   .get(authController.isAuthenticated, gameController.joinableGames)
@@ -67,7 +73,7 @@ router.route('/joinableGames')
 /*
 Get all games, a user has taken part in or will take part in
 */
-router.route('/mygames')
+router.route('/myGames')
     .get(authController.isAuthenticated, gameController.myGames);
 
 /*
