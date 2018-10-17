@@ -2,7 +2,7 @@ FROM debian:wheezy
 
 MAINTAINER garvin[dot] leclaire [at] gmail [dot] com
 
-# Install basics 
+# Install basics
 RUN apt-get update &&  \
     apt-get install -y git wget curl && \
     apt-get clean
@@ -11,7 +11,7 @@ RUN curl -sL https://deb.nodesource.com/setup | bash -
 
 RUN apt-get update &&  \
     apt-get install -y nodejs nodejs-legacy build-essential && \
-    ln -s /usr/bin/nodejs /usr/local/bin/node && \ 
+    ln -s /usr/bin/nodejs /usr/local/bin/node && \
     apt-get clean
 
 
@@ -69,12 +69,12 @@ RUN echo ANDROID_HOME="${ANDROID_HOME}" >> /etc/environment
 RUN ["/opt/tools/android-accept-licenses.sh", "android update sdk --all --no-ui --filter platform-tools,tools,build-tools-21.1.2,android-19,addon-google_apis_x86-google-19,extra-android-support,extra-android-m2repository,extra-google-m2repository,sys-img-x86-android-21"]
 
 # Clone our private GitHub Repository
-RUN apt-get install -y git 
-RUN mkdir /myApp 
+RUN apt-get install -y git
+RUN mkdir /myApp
 RUN git clone https://6c0117f131a928ac638b83202170801a286212ec:x-oauth-basic@github.com/immae1/Radcup-client /myApp
 RUN echo $SERVER
 #replace dockerweb with env variable:
-ENV SERVER=192.168.99.100
+ENV SERVER=127.0.0.1
 RUN sed -i "s/dockerweb/${SERVER}/" /myApp/www/js/services/gamesService.js
 RUN cat /myApp/www/js/services/gamesService.js
 RUN sed -i "s/dockerweb/${SERVER}/" /myApp/www/js/services/userService.js
