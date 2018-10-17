@@ -13,7 +13,7 @@ WORKDIR /home/app/src
 RUN npm install
 
 #replace dockerweb with env variable:
-ENV SERVER=127.0.0.1
+ENV SERVER=172.17.0.4
 RUN sed -i "s/dockerweb/${SERVER}/" /home/app/src/config.js
 CMD ["npm", "test"]
 # Port 3000 for server
