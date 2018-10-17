@@ -74,7 +74,7 @@ RUN mkdir /myApp
 RUN git clone https://6c0117f131a928ac638b83202170801a286212ec:x-oauth-basic@github.com/immae1/Radcup-client /myApp
 RUN echo $SERVER
 #replace dockerweb with env variable:
-ENV SERVER=172.17.0.4
+ENV SERVER=172.17.0.2
 RUN sed -i "s/dockerweb/${SERVER}/" /myApp/www/js/services/gamesService.js
 RUN cat /myApp/www/js/services/gamesService.js
 RUN sed -i "s/dockerweb/${SERVER}/" /myApp/www/js/services/userService.js
